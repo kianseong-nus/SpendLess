@@ -5,7 +5,6 @@ import com.kianseong.spendless.components.appnav.AppNav;
 import com.kianseong.spendless.components.appnav.AppNavItem;
 import com.kianseong.spendless.views.about.AboutView;
 import com.kianseong.spendless.views.expenses.ExpensesView;
-import com.kianseong.spendless.views.helloworld.HelloWorldView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -51,11 +50,8 @@ public class MainLayout extends AppLayout {
     }
 
     private AppNav createNavigation() {
-        // AppNav is not yet an official component.
-        // For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
 
-        nav.addItem(new AppNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
         nav.addItem(new AppNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
         nav.addItem(new AppNavItem("Expenses", ExpensesView.class, LineAwesomeIcon.DOLLAR_SIGN_SOLID.create()));
 
@@ -63,9 +59,7 @@ public class MainLayout extends AppLayout {
     }
 
     private Footer createFooter() {
-        Footer layout = new Footer();
-
-        return layout;
+        return new Footer();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.kianseong.spendless;
 
-import com.kianseong.spendless.data.Expense;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
