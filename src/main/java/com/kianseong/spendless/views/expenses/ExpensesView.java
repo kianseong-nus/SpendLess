@@ -55,6 +55,10 @@ public class ExpensesView extends VerticalLayout {
         closeEditor();
     }
 
+    private void closeExpense(ExpenseForm.CloseEvent event) {
+        closeEditor();
+    }
+
     private HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Filter by description...");
         filterText.setClearButtonVisible(true);
@@ -80,6 +84,7 @@ public class ExpensesView extends VerticalLayout {
         form.setWidth("25em");
         form.addSaveListener(this::saveExpense);
         form.addDeleteListener(this::deleteExpense);
+        form.addCloseListener(this::closeExpense);
     }
 
     private void addExpense() {
