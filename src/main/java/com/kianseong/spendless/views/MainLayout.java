@@ -42,7 +42,7 @@ public class MainLayout extends AppLayout {
     private void addDrawerContent() {
         H1 appName = new H1("SpendLess");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-        Header header = new Header(appName);
+        Header header = new Header(appName, new ThemeView());
 
         Scroller scroller = new Scroller(createNavigation());
 
