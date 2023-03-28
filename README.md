@@ -1,5 +1,5 @@
 # SpendLess
-![Java CI](https://github.com/KIANSEONG/SpendLess/actions/workflows/maven-ci.yml/badge.svg)
+![Java CI](https://github.com/KIANSEONG/SpendLess/actions/workflows/java-ci.yml/badge.svg)
 
 Simple expenses tracker app created with Vaadin, Spring and Postgres
 
