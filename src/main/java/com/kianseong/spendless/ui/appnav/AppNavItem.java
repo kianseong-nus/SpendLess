@@ -1,4 +1,4 @@
-package com.kianseong.spendless.components.appnav;
+package com.kianseong.spendless.ui.appnav;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;

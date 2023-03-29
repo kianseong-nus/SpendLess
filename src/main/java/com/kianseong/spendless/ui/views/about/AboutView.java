@@ -1,6 +1,6 @@
-package com.kianseong.spendless.views.about;
+package com.kianseong.spendless.ui.views.about;
 
-import com.kianseong.spendless.views.MainLayout;
+import com.kianseong.spendless.ui.views.MainLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;

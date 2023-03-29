@@ -1,4 +1,4 @@
-package com.kianseong.spendless.views;
+package com.kianseong.spendless.ui.views;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;

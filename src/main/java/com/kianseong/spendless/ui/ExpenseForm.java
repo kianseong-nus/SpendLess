@@ -1,4 +1,4 @@
-package com.kianseong.spendless;
+package com.kianseong.spendless.ui;
 
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -15,7 +15,7 @@ import com.vaadin.flow.shared.Registration;
 
 public class ExpenseForm extends FormLayout {
     TextField description = new TextField("Description");
-    ComboBox<String> categories = new ComboBox<>("Category");
+    ComboBox<ExpenseCategory> categories = new ComboBox<>("Category");
     TextField amount = new TextField("Amount");
 
     Binder<Expense> binder = new BeanValidationBinder<>(Expense.class);

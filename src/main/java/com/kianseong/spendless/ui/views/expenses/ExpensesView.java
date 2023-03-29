@@ -1,9 +1,9 @@
-package com.kianseong.spendless.views.expenses;
+package com.kianseong.spendless.ui.views.expenses;
 
-import com.kianseong.spendless.ExpenseForm;
-import com.kianseong.spendless.Expense;
-import com.kianseong.spendless.ExpenseService;
-import com.kianseong.spendless.views.MainLayout;
+import com.kianseong.spendless.ui.ExpenseForm;
+import com.kianseong.spendless.ui.Expense;
+import com.kianseong.spendless.backend.services.ExpenseService;
+import com.kianseong.spendless.ui.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;

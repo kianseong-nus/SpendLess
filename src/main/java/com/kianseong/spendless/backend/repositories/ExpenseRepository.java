@@ -1,5 +1,6 @@
-package com.kianseong.spendless;
+package com.kianseong.spendless.backend.repositories;
 
+import com.kianseong.spendless.ui.Expense;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

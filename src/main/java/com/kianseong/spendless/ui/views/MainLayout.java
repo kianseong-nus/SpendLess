@@ -1,10 +1,10 @@
-package com.kianseong.spendless.views;
+package com.kianseong.spendless.ui.views;
 
 
-import com.kianseong.spendless.components.appnav.AppNav;
-import com.kianseong.spendless.components.appnav.AppNavItem;
-import com.kianseong.spendless.views.about.AboutView;
-import com.kianseong.spendless.views.expenses.ExpensesView;
+import com.kianseong.spendless.ui.appnav.AppNav;
+import com.kianseong.spendless.ui.appnav.AppNavItem;
+import com.kianseong.spendless.ui.views.about.AboutView;
+import com.kianseong.spendless.ui.views.expenses.ExpensesView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
