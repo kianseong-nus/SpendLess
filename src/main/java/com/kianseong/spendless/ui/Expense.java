@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -13,24 +14,26 @@ public class Expense {
 
     @Id
     @SequenceGenerator(
-            name = "expense_id_sequence",
-            sequenceName = "expense_id_sequence",
+            name = "expense_id_seq",
+            sequenceName = "expense_id_seq",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "expense_id_sequence"
+            generator = "expense_id_seq"
     )
     private Integer id;
     private String description;
     private String category;
     private int amount;
+    private LocalDate date;
 
-    public Expense(Integer id, String description, String category, int amount) {
+    public Expense(Integer id, String description, String category, int amount, LocalDate date) {
         this.id = id;
         this.description = description;
         this.category = category;
         this.amount = amount;
+        this.date = date;
     }
 
     public Expense() {
@@ -69,17 +72,29 @@ public class Expense {
         this.amount = amount;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Expense expense = (Expense) o;
-        return amount == expense.amount && Objects.equals(id, expense.id) && Objects.equals(description, expense.description) && Objects.equals(category, expense.category);
+        return amount == expense.amount
+                && Objects.equals(id, expense.id)
+                && Objects.equals(description, expense.description)
+                && Objects.equals(category, expense.category)
+                && Objects.equals(date, expense.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, category, amount);
+        return Objects.hash(id, description, category, amount, date);
     }
 
     @Override
@@ -88,7 +103,8 @@ public class Expense {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
-                ", amount=" + amount +
+                ", amount=" + amount + '\'' +
+                ", date=" + date +
                 '}';
     }
 }

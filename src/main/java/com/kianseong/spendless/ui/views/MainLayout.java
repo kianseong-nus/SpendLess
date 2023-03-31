@@ -5,6 +5,7 @@ import com.kianseong.spendless.ui.appnav.AppNav;
 import com.kianseong.spendless.ui.appnav.AppNavItem;
 import com.kianseong.spendless.ui.views.about.AboutView;
 import com.kianseong.spendless.ui.views.expenses.ExpensesView;
+import com.kianseong.spendless.ui.views.settings.SettingsView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -42,7 +43,7 @@ public class MainLayout extends AppLayout {
     private void addDrawerContent() {
         H1 appName = new H1("SpendLess");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-        Header header = new Header(appName, new ThemeView());
+        Header header = new Header(appName);
 
         Scroller scroller = new Scroller(createNavigation());
 
@@ -54,6 +55,7 @@ public class MainLayout extends AppLayout {
 
         nav.addItem(new AppNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
         nav.addItem(new AppNavItem("Expenses", ExpensesView.class, LineAwesomeIcon.DOLLAR_SIGN_SOLID.create()));
+        nav.addItem(new AppNavItem("Settings", SettingsView.class, LineAwesomeIcon.COG_SOLID.create()));
 
         return nav;
     }

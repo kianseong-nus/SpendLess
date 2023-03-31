@@ -1,8 +1,7 @@
 package com.kianseong.spendless.ui.views.expenses;
 
-import com.kianseong.spendless.ui.ExpenseForm;
-import com.kianseong.spendless.ui.Expense;
 import com.kianseong.spendless.backend.services.ExpenseService;
+import com.kianseong.spendless.ui.Expense;
 import com.kianseong.spendless.ui.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,44 +18,26 @@ public class ExpensesView extends VerticalLayout {
 
     ExpenseService service;
     Grid<Expense> grid;
-    ExpenseForm form;
     TextField filterText;
+    NewExpenseView newExpense;
 
     public ExpensesView(ExpenseService service) {
         this.service = service;
         grid = new Grid<>(Expense.class);
         filterText = new TextField();
+        newExpense = new NewExpenseView();
 
         setSizeFull();
         configureGrid();
-        configureForm();
-        add(getToolbar(), getContent());
-        closeEditor();
+        add(getToolbar(), getContent(), newExpense);
         updateList();
     }
 
     private HorizontalLayout getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(2, grid);
-        content.setFlexGrow(1, form);
+        HorizontalLayout content = new HorizontalLayout(grid);
+        content.setFlexGrow(1, grid);
         content.setSizeFull();
         return content;
-    }
-
-    private void saveExpense(ExpenseForm.SaveEvent event) {
-        service.saveExpense(event.getExpense());
-        updateList();
-        closeEditor();
-    }
-
-    private void deleteExpense(ExpenseForm.DeleteEvent event) {
-        service.deleteExpense(event.getExpense());
-        updateList();
-        closeEditor();
-    }
-
-    private void closeExpense(ExpenseForm.CloseEvent event) {
-        closeEditor();
     }
 
     private HorizontalLayout getToolbar() {
@@ -66,47 +47,24 @@ public class ExpensesView extends VerticalLayout {
         filterText.addValueChangeListener(e -> updateList());
 
         Button addExpenseButton = new Button("Add expense");
-        addExpenseButton.addClickListener(click -> addExpense());
+        addExpenseButton.addClickListener(e -> showNewExpenseForm());
 
         return new HorizontalLayout(filterText, addExpenseButton);
     }
 
     private void configureGrid() {
         grid.setSizeFull();
-        grid.setColumns("description", "category", "amount");
+        grid.setColumns("description", "category", "amount", "date");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
-        grid.asSingleSelect().addValueChangeListener(event -> editExpense(event.getValue()));
     }
 
-    private void configureForm() {
-        form = new ExpenseForm();
-        form.setWidth("25em");
-        form.addSaveListener(this::saveExpense);
-        form.addDeleteListener(this::deleteExpense);
-        form.addCloseListener(this::closeExpense);
-    }
-
-    private void addExpense() {
-        grid.asSingleSelect().clear();
-        editExpense(new Expense());
-    }
-
-    public void editExpense(Expense expense) {
-        if (expense == null) {
-            closeEditor();
-        } else {
-            form.setExpense(expense);
-            form.setVisible(true);
-        }
-    }
 
     private void updateList() {
         grid.setItems(service.findAllExpenses(filterText.getValue()));
     }
 
-    private void closeEditor() {
-        form.setExpense(null);
-        form.setVisible(false);
+
+    public void showNewExpenseForm() {
+        newExpense.open();
     }
 }
