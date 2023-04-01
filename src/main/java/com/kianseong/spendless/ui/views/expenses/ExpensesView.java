@@ -19,17 +19,15 @@ public class ExpensesView extends VerticalLayout {
     private final ExpenseService expenseService;
     private final Grid<ExpenseDTO> grid;
     private final TextField filterText;
-    private final ExpenseForm newExpense;
 
     public ExpensesView(ExpenseService expenseService) {
         this.expenseService = expenseService;
         grid = new Grid<>(ExpenseDTO.class);
         filterText = new TextField();
-        newExpense = new ExpenseForm(expenseService);
 
         setSizeFull();
         configureGrid();
-        add(getToolbar(), getContent(), newExpense);
+        add(getToolbar(), getContent());
         updateList();
     }
 
@@ -59,16 +57,23 @@ public class ExpensesView extends VerticalLayout {
         grid.addColumn(ExpenseDTO::amount).setHeader("Amount");
         grid.addColumn(ExpenseDTO::date).setHeader("Date");
         grid.getColumns().forEach(col -> col.setAutoWidth(true).setSortable(true));
-        // TODO: Update form with details
-        grid.addItemDoubleClickListener(e -> showNewExpenseForm());
+        grid.addItemDoubleClickListener(e -> showExpenseForm(e.getItem()));
     }
-
 
     private void updateList() {
         grid.setItems(expenseService.findAllExpenses(filterText.getValue()));
     }
 
-    public void showNewExpenseForm() {
-        newExpense.open();
+    private void showNewExpenseForm() {
+        ExpenseForm form = new ExpenseForm(expenseService);
+        add(form);
+        form.open();
     }
+
+    private void showExpenseForm(ExpenseDTO expenseDTO) {
+        ExpenseForm form = new ExpenseForm(expenseService, expenseDTO);
+        add(form);
+        form.open();
+    }
+
 }

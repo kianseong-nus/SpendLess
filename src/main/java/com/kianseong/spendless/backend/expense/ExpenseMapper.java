@@ -3,18 +3,25 @@ package com.kianseong.spendless.backend.expense;
 import com.kianseong.spendless.ui.Expense;
 import org.springframework.stereotype.Service;
 
-import java.util.function.Function;
 
 @Service
-public class ExpenseDTOMapper implements Function<Expense, ExpenseDTO> {
+public class ExpenseMapper {
 
-    @Override
-    public ExpenseDTO apply(Expense expense) {
+    public ExpenseDTO expenseToDto(Expense expense) {
         return new ExpenseDTO(
                 expense.getDescription(),
                 expense.getCategory(),
                 expense.getAmount(),
                 expense.getDate()
+        );
+    }
+
+    public Expense dtoToExpense(ExpenseDTO expenseDTO) {
+        return new Expense(
+                expenseDTO.description(),
+                expenseDTO.category(),
+                expenseDTO.amount(),
+                expenseDTO.date()
         );
     }
 

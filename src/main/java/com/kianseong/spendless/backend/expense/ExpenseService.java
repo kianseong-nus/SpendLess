@@ -1,7 +1,6 @@
 package com.kianseong.spendless.backend.expense;
 
 import com.kianseong.spendless.ui.Expense;
-import com.kianseong.spendless.backend.expense.ExpenseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,12 +11,12 @@ import java.util.stream.Collectors;
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
-    private final ExpenseDTOMapper expenseDTOMapper;
+    private final ExpenseMapper expenseMapper;
 
     public ExpenseService(ExpenseRepository expenseRepository,
-                          ExpenseDTOMapper expenseDTOMapper) {
+                          ExpenseMapper expenseMapper) {
         this.expenseRepository = expenseRepository;
-        this.expenseDTOMapper = expenseDTOMapper;
+        this.expenseMapper = expenseMapper;
     }
 
     @Transactional
@@ -25,12 +24,12 @@ public class ExpenseService {
         if (filter == null || filter.isEmpty()) {
             return expenseRepository.findAll()
                     .stream()
-                    .map(expenseDTOMapper)
+                    .map(expenseMapper::expenseToDto)
                     .collect(Collectors.toList());
         } else {
             return expenseRepository.search(filter)
                     .stream()
-                    .map(expenseDTOMapper)
+                    .map(expenseMapper::expenseToDto)
                     .collect(Collectors.toList());
         }
     }
@@ -40,7 +39,7 @@ public class ExpenseService {
     }
 
     @Transactional
-    public void saveExpense(Expense expense) {
-        expenseRepository.save(expense);
+    public void saveExpense(ExpenseDTO expenseDTO) {
+        expenseRepository.save(expenseMapper.dtoToExpense(expenseDTO));
     }
 }

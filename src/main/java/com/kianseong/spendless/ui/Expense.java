@@ -40,6 +40,13 @@ public class Expense {
 
     }
 
+    public Expense(String description, String category, float amount, LocalDate date) {
+        this.description = description;
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+    }
+
     public Integer getId() {
         return id;
     }
