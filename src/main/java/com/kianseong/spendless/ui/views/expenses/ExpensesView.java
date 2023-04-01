@@ -1,7 +1,7 @@
 package com.kianseong.spendless.ui.views.expenses;
 
-import com.kianseong.spendless.backend.services.ExpenseService;
-import com.kianseong.spendless.ui.Expense;
+import com.kianseong.spendless.backend.expense.ExpenseDTO;
+import com.kianseong.spendless.backend.expense.ExpenseService;
 import com.kianseong.spendless.ui.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -16,16 +16,16 @@ import com.vaadin.flow.router.Route;
 @Route(value = "expenses", layout = MainLayout.class)
 public class ExpensesView extends VerticalLayout {
 
-    ExpenseService service;
-    Grid<Expense> grid;
-    TextField filterText;
-    NewExpenseView newExpense;
+    private final ExpenseService expenseService;
+    private final Grid<ExpenseDTO> grid;
+    private final TextField filterText;
+    private final ExpenseForm newExpense;
 
-    public ExpensesView(ExpenseService service) {
-        this.service = service;
-        grid = new Grid<>(Expense.class);
+    public ExpensesView(ExpenseService expenseService) {
+        this.expenseService = expenseService;
+        grid = new Grid<>(ExpenseDTO.class);
         filterText = new TextField();
-        newExpense = new NewExpenseView();
+        newExpense = new ExpenseForm(expenseService);
 
         setSizeFull();
         configureGrid();
@@ -54,15 +54,19 @@ public class ExpensesView extends VerticalLayout {
 
     private void configureGrid() {
         grid.setSizeFull();
-        grid.setColumns("description", "category", "amount", "date");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.addColumn(ExpenseDTO::description).setHeader("Description");
+        grid.addColumn(ExpenseDTO::category).setHeader("Category");
+        grid.addColumn(ExpenseDTO::amount).setHeader("Amount");
+        grid.addColumn(ExpenseDTO::date).setHeader("Date");
+        grid.getColumns().forEach(col -> col.setAutoWidth(true).setSortable(true));
+        // TODO: Update form with details
+        grid.addItemDoubleClickListener(e -> showNewExpenseForm());
     }
 
 
     private void updateList() {
-        grid.setItems(service.findAllExpenses(filterText.getValue()));
+        grid.setItems(expenseService.findAllExpenses(filterText.getValue()));
     }
-
 
     public void showNewExpenseForm() {
         newExpense.open();

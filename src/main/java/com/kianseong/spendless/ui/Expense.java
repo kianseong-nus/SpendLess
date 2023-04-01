@@ -25,10 +25,10 @@ public class Expense {
     private Integer id;
     private String description;
     private String category;
-    private int amount;
+    private float amount;
     private LocalDate date;
 
-    public Expense(Integer id, String description, String category, int amount, LocalDate date) {
+    public Expense(Integer id, String description, String category, float amount, LocalDate date) {
         this.id = id;
         this.description = description;
         this.category = category;
@@ -64,11 +64,11 @@ public class Expense {
         this.category = category;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
