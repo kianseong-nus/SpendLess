@@ -16,8 +16,16 @@ public class CookieManager {
         return null;
     }
 
-    public static void updateCookie(String name, String value) {
-        getCookieByName(name).setValue(value);
+    public static void setCookieValue(String name, String value) {
+        Cookie cookie = getCookieByName(name);
+        cookie.setValue(value);
+        cookie.setPath(VaadinService.getCurrentRequest().getContextPath());
+        VaadinService.getCurrentResponse().addCookie(cookie);
+
+    }
+
+    public static String getCookieValue(String name) {
+        return getCookieByName(name).getValue();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.kianseong.spendless.ui.views;
 
 
+import com.kianseong.spendless.ui.CookieManager;
 import com.kianseong.spendless.ui.appnav.AppNav;
 import com.kianseong.spendless.ui.appnav.AppNavItem;
 import com.kianseong.spendless.ui.views.about.AboutView;
@@ -12,9 +13,15 @@ import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.server.VaadinService;
+import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.servlet.http.Cookie;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -28,6 +35,7 @@ public class MainLayout extends AppLayout {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
+        loadTheme();
     }
 
     private void addHeaderContent() {
@@ -73,5 +81,16 @@ public class MainLayout extends AppLayout {
     private String getCurrentPageTitle() {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
+    }
+
+    private void loadTheme() {
+        Cookie darkModeCookie = CookieManager.getCookieByName("spendless_darkmode");
+        if (darkModeCookie != null) {
+            var js = "document.body.setAttribute('theme', $0)";
+            getElement().executeJs(js, darkModeCookie.getValue().equals("true") ? Lumo.DARK : Lumo.LIGHT);
+        } else {
+            darkModeCookie = new Cookie("spendless_darkmode", "false");
+            VaadinService.getCurrentResponse().addCookie(darkModeCookie);
+        }
     }
 }
