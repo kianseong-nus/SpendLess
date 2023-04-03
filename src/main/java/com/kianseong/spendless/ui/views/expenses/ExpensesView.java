@@ -11,19 +11,18 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.vaadin.lineawesome.LineAwesomeIcon;
 
 @PageTitle("Expenses")
 @Route(value = "expenses", layout = MainLayout.class)
 public class ExpensesView extends VerticalLayout {
 
     private final ExpenseService expenseService;
-    private final Grid<ExpenseDTO> grid;
-    private final TextField filterText;
+    private final Grid<ExpenseDTO> grid = new Grid<>(ExpenseDTO.class);
+    private final TextField filterText = new TextField();
 
     public ExpensesView(ExpenseService expenseService) {
         this.expenseService = expenseService;
-        grid = new Grid<>(ExpenseDTO.class);
-        filterText = new TextField();
 
         setSizeFull();
         configureGrid();
@@ -46,8 +45,10 @@ public class ExpensesView extends VerticalLayout {
 
         Button addExpenseButton = new Button("Add expense");
         addExpenseButton.addClickListener(e -> showNewExpenseForm());
+        Button refreshButton = new Button(LineAwesomeIcon.UNDO_ALT_SOLID.create());
+        refreshButton.addClickListener(e -> updateList());
 
-        return new HorizontalLayout(filterText, addExpenseButton);
+        return new HorizontalLayout(filterText, addExpenseButton, refreshButton);
     }
 
     private void configureGrid() {
