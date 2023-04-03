@@ -1,8 +1,9 @@
 package com.kianseong.spendless.ui.views.expenses;
 
-import com.kianseong.spendless.backend.expense.ExpenseDTO;
 import com.kianseong.spendless.backend.expense.ExpenseService;
+import com.kianseong.spendless.ui.Expense;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.notification.Notification;
@@ -12,8 +13,6 @@ import com.vaadin.flow.component.textfield.TextField;
 public class ExpenseForm extends VerticalLayout {
 
     private final Dialog form = new Dialog();
-    private final Button cancelButton = new Button("Cancel");
-    private final Button saveButton = new Button("Save");
     private final Button deleteButton = new Button("Delete");
     private final ExpenseService expenseService;
 
@@ -27,61 +26,72 @@ public class ExpenseForm extends VerticalLayout {
         setupNewForm();
     }
 
-    public ExpenseForm(ExpenseService expenseService, ExpenseDTO expenseDTO) {
+    public ExpenseForm(ExpenseService expenseService, Expense expense) {
         this.expenseService = expenseService;
-        setupExistingForm(expenseDTO);
+        setupExistingForm(expense);
     }
 
     private void setupNewForm() {
         form.setHeaderTitle("New expense");
         form.setCloseOnOutsideClick(false);
         form.setCloseOnEsc(true); // Ctrl+Esc
-        form.getFooter().add(cancelButton);
-        form.getFooter().add(saveButton);
+        form.getFooter().add(createCancelButton(), createSaveButton());
         form.add(createDialogLayout());
-
-        cancelButton.addClickListener(e -> form.close());
-        saveButton.addClickListener(e -> saveExpense(collect()));
     }
 
-    private void setupExistingForm(ExpenseDTO expenseDTO) {
-        descriptionField.setValue(expenseDTO.description());
-        categoryField.setValue(expenseDTO.category());
-        amountField.setValue(Float.toString(expenseDTO.amount()));
-        dateField.setValue(expenseDTO.date());
+    private void setupExistingForm(Expense expense) {
+        descriptionField.setValue(expense.getDescription());
+        categoryField.setValue(expense.getCategory());
+        amountField.setValue(Float.toString(expense.getAmount()));
+        dateField.setValue(expense.getDate());
 
         form.setHeaderTitle("Expense");
         form.setCloseOnOutsideClick(false);
         form.setCloseOnEsc(true); // Ctrl+Esc
-        form.getFooter().add(cancelButton);
-        form.getFooter().add(deleteButton);
-        // TODO: Add cancel button to cancel all changes
-        form.getFooter().add(saveButton);
+        form.getFooter().add(createCancelButton(), deleteButton, createSaveButton());
         form.add(createDialogLayout());
 
-        cancelButton.addClickListener(e -> form.close());
+        deleteButton.addClickListener(e -> deleteExpense(expense));
     }
 
-    private void saveExpense(ExpenseDTO expenseDTO) {
-        expenseService.saveExpense(expenseDTO);
+    private Button createCancelButton() {
+        Button cancel = new Button("Cancel");
+        cancel.addClickListener(e -> form.close());
+        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        return cancel;
+    }
+
+    private Button createSaveButton() {
+        Button save = new Button("Save");
+        save.addClickListener(e -> saveExpense(collect()));
+        return save;
+    }
+
+    private void saveExpense(Expense expense) {
+        expenseService.saveExpense(expense);
         form.close();
         Notification.show("Expense added!").setPosition(Notification.Position.TOP_CENTER);
     }
 
-    private void deleteExpense(ExpenseDTO expenseDTO) {
-
+    private void deleteExpense(Expense expense) {
+        form.close();
+        expenseService.deleteExpense(expense);
+        Notification.show("Expense deleted!").setPosition(Notification.Position.TOP_CENTER);
     }
 
     // Creates the popup form not including the header and footer
     private VerticalLayout createDialogLayout() {
         VerticalLayout layout = new VerticalLayout(descriptionField, categoryField, amountField, dateField);
+        layout.setPadding(false);
+        layout.setSpacing(false);
+        layout.setAlignItems(Alignment.STRETCH);
         layout.getStyle().set("width", "18rem").set("max-width", "100%");
 
         return layout;
     }
 
-    private ExpenseDTO collect() {
-        return new ExpenseDTO(
+    private Expense collect() {
+        return new Expense(
                 descriptionField.getValue(),
                 categoryField.getValue(),
                 Float.parseFloat(amountField.getValue()),

@@ -1,7 +1,6 @@
 package com.kianseong.spendless.backend.expense;
 
 import com.kianseong.spendless.ui.Expense;
-import com.kianseong.spendless.backend.expense.ExpenseService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +18,7 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public List<ExpenseDTO> getExpenses() {
+    public List<Expense> getExpenses() {
         return expenseService.findAllExpenses("");
     }
 

@@ -1,7 +1,7 @@
 package com.kianseong.spendless.ui.views.expenses;
 
-import com.kianseong.spendless.backend.expense.ExpenseDTO;
 import com.kianseong.spendless.backend.expense.ExpenseService;
+import com.kianseong.spendless.ui.Expense;
 import com.kianseong.spendless.ui.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,7 +18,7 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 public class ExpensesView extends VerticalLayout {
 
     private final ExpenseService expenseService;
-    private final Grid<ExpenseDTO> grid = new Grid<>(ExpenseDTO.class);
+    private final Grid<Expense> grid = new Grid<>(Expense.class);
     private final TextField filterText = new TextField();
 
     public ExpensesView(ExpenseService expenseService) {
@@ -53,11 +53,8 @@ public class ExpensesView extends VerticalLayout {
 
     private void configureGrid() {
         grid.setSizeFull();
-        grid.addColumn(ExpenseDTO::description).setHeader("Description");
-        grid.addColumn(ExpenseDTO::category).setHeader("Category");
-        grid.addColumn(ExpenseDTO::amount).setHeader("Amount");
-        grid.addColumn(ExpenseDTO::date).setHeader("Date");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true).setSortable(true));
+        grid.setColumns("description", "category", "amount", "date");
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.addItemDoubleClickListener(e -> showExpenseForm(e.getItem()));
     }
 
@@ -71,8 +68,8 @@ public class ExpensesView extends VerticalLayout {
         form.open();
     }
 
-    private void showExpenseForm(ExpenseDTO expenseDTO) {
-        ExpenseForm form = new ExpenseForm(expenseService, expenseDTO);
+    private void showExpenseForm(Expense expense) {
+        ExpenseForm form = new ExpenseForm(expenseService, expense);
         add(form);
         form.open();
     }

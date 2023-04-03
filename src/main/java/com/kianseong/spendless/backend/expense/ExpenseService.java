@@ -5,41 +5,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
-    private final ExpenseMapper expenseMapper;
 
-    public ExpenseService(ExpenseRepository expenseRepository,
-                          ExpenseMapper expenseMapper) {
+    public ExpenseService(ExpenseRepository expenseRepository) {
         this.expenseRepository = expenseRepository;
-        this.expenseMapper = expenseMapper;
     }
 
     @Transactional
-    public List<ExpenseDTO> findAllExpenses(String filter) {
+    public List<Expense> findAllExpenses(String filter) {
         if (filter == null || filter.isEmpty()) {
-            return expenseRepository.findAll()
-                    .stream()
-                    .map(expenseMapper::expenseToDto)
-                    .collect(Collectors.toList());
+            return expenseRepository.findAll();
         } else {
-            return expenseRepository.search(filter)
-                    .stream()
-                    .map(expenseMapper::expenseToDto)
-                    .collect(Collectors.toList());
+            return expenseRepository.search(filter);
         }
     }
 
-    public void deleteExpense(Expense expense) {
-        expenseRepository.delete(expense);
+    @Transactional
+    public void saveExpense(Expense expense) {
+        expenseRepository.save(expense);
     }
 
     @Transactional
-    public void saveExpense(ExpenseDTO expenseDTO) {
-        expenseRepository.save(expenseMapper.dtoToExpense(expenseDTO));
+    public void deleteExpense(Expense expense) {
+        expenseRepository.delete(expense);
     }
 }
