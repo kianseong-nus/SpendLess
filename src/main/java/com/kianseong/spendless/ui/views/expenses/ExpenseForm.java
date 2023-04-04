@@ -12,6 +12,8 @@ import com.vaadin.flow.component.textfield.TextField;
 
 public class ExpenseForm extends VerticalLayout {
 
+    private int expenseId;
+
     private final Dialog form = new Dialog();
     private final Button deleteButton = new Button("Delete");
     private final ExpenseService expenseService;
@@ -23,11 +25,13 @@ public class ExpenseForm extends VerticalLayout {
 
     public ExpenseForm(ExpenseService expenseService) {
         this.expenseService = expenseService;
+        expenseId = -1;
         setupNewForm();
     }
 
     public ExpenseForm(ExpenseService expenseService, Expense expense) {
         this.expenseService = expenseService;
+        expenseId = expense.getId();
         setupExistingForm(expense);
     }
 
@@ -54,6 +58,10 @@ public class ExpenseForm extends VerticalLayout {
         deleteButton.addClickListener(e -> deleteExpense(expense));
     }
 
+    public void open() {
+        form.open();
+    }
+
     private Button createCancelButton() {
         Button cancel = new Button("Cancel");
         cancel.addClickListener(e -> form.close());
@@ -63,20 +71,20 @@ public class ExpenseForm extends VerticalLayout {
 
     private Button createSaveButton() {
         Button save = new Button("Save");
-        save.addClickListener(e -> saveExpense(collect()));
+        save.addClickListener(e -> {
+            if (expenseId != -1) {
+                saveExpense(new Expense(
+                        expenseId,
+                        descriptionField.getValue(),
+                        categoryField.getValue(),
+                        Float.parseFloat(amountField.getValue()),
+                        dateField.getValue()
+                ));
+            } else {
+                saveExpense(collect());
+            }
+        });
         return save;
-    }
-
-    private void saveExpense(Expense expense) {
-        expenseService.saveExpense(expense);
-        form.close();
-        Notification.show("Expense added!").setPosition(Notification.Position.TOP_CENTER);
-    }
-
-    private void deleteExpense(Expense expense) {
-        form.close();
-        expenseService.deleteExpense(expense);
-        Notification.show("Expense deleted!").setPosition(Notification.Position.TOP_CENTER);
     }
 
     // Creates the popup form not including the header and footer
@@ -99,7 +107,16 @@ public class ExpenseForm extends VerticalLayout {
         );
     }
 
-    public void open() {
-        form.open();
+    private void saveExpense(Expense expense) {
+        expenseService.saveExpense(expense);
+        form.close();
+        String message = expenseId != -1 ? "Expense edited!" : "Expense added!";
+        Notification.show(message).setPosition(Notification.Position.TOP_CENTER);
+    }
+
+    private void deleteExpense(Expense expense) {
+        form.close();
+        expenseService.deleteExpense(expense);
+        Notification.show("Expense deleted!").setPosition(Notification.Position.TOP_CENTER);
     }
 }
