@@ -4,6 +4,7 @@ import com.kianseong.spendless.backend.expense.ExpenseService;
 import com.kianseong.spendless.ui.Expense;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.notification.Notification;
@@ -22,6 +23,7 @@ public class ExpenseForm extends VerticalLayout {
 
     private final TextField descriptionField = new TextField("Description");
     private final TextField categoryField = new TextField("Category");
+    private final Checkbox isIncomeCheckbox = new Checkbox("Income");
     private final TextField amountField = new TextField("Amount");
     private final DatePicker dateField = new DatePicker("Date");
 
@@ -40,6 +42,7 @@ public class ExpenseForm extends VerticalLayout {
     private void setupNewForm() {
         dateField.setValue(LocalDate.now());
         form.setHeaderTitle("New expense");
+        form.getHeader().add(isIncomeCheckbox);
         form.setCloseOnOutsideClick(false);
         form.setCloseOnEsc(true); // Ctrl+Esc
         form.getFooter().add(createCancelButton(), createSaveButton());
@@ -49,10 +52,12 @@ public class ExpenseForm extends VerticalLayout {
     private void setupExistingForm(Expense expense) {
         descriptionField.setValue(expense.getDescription());
         categoryField.setValue(expense.getCategory());
+        isIncomeCheckbox.setValue(expense.getIsIncome());
         amountField.setValue(Float.toString(expense.getAmount()));
         dateField.setValue(expense.getDate());
 
         form.setHeaderTitle("Expense");
+        form.getHeader().add(isIncomeCheckbox);
         form.setCloseOnOutsideClick(false);
         form.setCloseOnEsc(true); // Ctrl+Esc
         form.getFooter().add(createCancelButton(), deleteButton, createSaveButton());
@@ -80,6 +85,7 @@ public class ExpenseForm extends VerticalLayout {
                         expenseId,
                         descriptionField.getValue(),
                         categoryField.getValue(),
+                        isIncomeCheckbox.getValue(),
                         Float.parseFloat(amountField.getValue()),
                         dateField.getValue()
                 ));
@@ -105,6 +111,7 @@ public class ExpenseForm extends VerticalLayout {
         return new Expense(
                 descriptionField.getValue(),
                 categoryField.getValue(),
+                isIncomeCheckbox.getValue(),
                 Float.parseFloat(amountField.getValue()),
                 dateField.getValue()
         );

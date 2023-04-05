@@ -31,6 +31,7 @@ public class ExpenseServiceTest {
         final Expense expenseToSave = new Expense(
                 "Breakfast",
                 "Food",
+                false,
                 30,
                 LocalDate.of(2022, 02, 02)
         );
@@ -48,6 +49,7 @@ public class ExpenseServiceTest {
         final Expense expense = new Expense(
                 "Breakfast",
                 "Food",
+                false,
                 30,
                 LocalDate.of(2022, 02, 02)
         );
