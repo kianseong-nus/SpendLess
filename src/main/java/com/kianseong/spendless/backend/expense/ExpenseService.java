@@ -15,18 +15,18 @@ public class ExpenseService {
         this.expenseRepository = expenseRepository;
     }
 
-    @Transactional
     public List<Expense> findAllExpenses(String filter) {
         if (filter == null || filter.isEmpty()) {
             return expenseRepository.findAll();
         } else {
-            return expenseRepository.search(filter);
+            return expenseRepository.filter(filter);
         }
     }
 
     @Transactional
-    public void saveExpense(Expense expense) {
+    public Expense saveExpense(Expense expense) {
         expenseRepository.save(expense);
+        return expense;
     }
 
     @Transactional

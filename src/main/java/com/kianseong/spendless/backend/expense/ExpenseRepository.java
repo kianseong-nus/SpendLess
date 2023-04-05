@@ -11,6 +11,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
 
     @Query("select e from Expense e " +
             "where lower(e.description) like lower(concat('%', :searchTerm, '%')) ")
-    List<Expense> search(@Param("searchTerm") String searchTerm);
+    List<Expense> filter(@Param("searchTerm") String searchTerm);
 
 }

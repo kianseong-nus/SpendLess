@@ -52,7 +52,8 @@ public class ExpenseServiceTest {
                 LocalDate.of(2022, 02, 02)
         );
         service.saveExpense(expense);
-
+        service.deleteExpense(expense);
+        verify(repository, times(1)).delete(expense);
     }
 
 }

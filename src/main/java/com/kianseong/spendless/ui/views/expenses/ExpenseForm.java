@@ -10,6 +10,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
+import java.time.LocalDate;
+
 public class ExpenseForm extends VerticalLayout {
 
     private int expenseId;
@@ -36,6 +38,7 @@ public class ExpenseForm extends VerticalLayout {
     }
 
     private void setupNewForm() {
+        dateField.setValue(LocalDate.now());
         form.setHeaderTitle("New expense");
         form.setCloseOnOutsideClick(false);
         form.setCloseOnEsc(true); // Ctrl+Esc
