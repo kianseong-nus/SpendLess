@@ -7,6 +7,7 @@ import com.kianseong.spendless.ui.appnav.AppNavItem;
 import com.kianseong.spendless.ui.views.about.AboutView;
 import com.kianseong.spendless.ui.views.expenses.ExpensesView;
 import com.kianseong.spendless.ui.views.settings.SettingsView;
+import com.kianseong.spendless.ui.views.statistics.StatisticsView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -64,6 +65,7 @@ public class MainLayout extends AppLayout {
         nav.addItem(new AppNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
         nav.addItem(new AppNavItem("Expenses", ExpensesView.class, LineAwesomeIcon.DOLLAR_SIGN_SOLID.create()));
         nav.addItem(new AppNavItem("Settings", SettingsView.class, LineAwesomeIcon.COG_SOLID.create()));
+        nav.addItem(new AppNavItem("Statistics", StatisticsView.class, LineAwesomeIcon.CHART_PIE_SOLID.create()));
 
         return nav;
     }
