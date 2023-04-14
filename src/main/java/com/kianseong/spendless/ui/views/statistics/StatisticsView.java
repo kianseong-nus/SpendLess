@@ -2,7 +2,6 @@ package com.kianseong.spendless.ui.views.statistics;
 
 import com.kianseong.spendless.backend.expense.ExpenseService;
 import com.kianseong.spendless.ui.views.MainLayout;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.DataSeries;
@@ -12,12 +11,14 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextAreaVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @PageTitle("Statistics")
-@Route(value = "/", layout = MainLayout.class)
+@Route(value = "statistics", layout = MainLayout.class)
+@RouteAlias(value = "", layout = MainLayout.class)
 public class StatisticsView extends VerticalLayout {
 
     private ExpenseService expenseService;
@@ -25,7 +26,7 @@ public class StatisticsView extends VerticalLayout {
     private final HashMap<String, Float> dataMap = new HashMap<>();
     private final DataSeries series = new DataSeries();
 
-    public StatisticsView(ExpenseService expenseService) {
+    public StatisticsView(final ExpenseService expenseService) {
         this.expenseService = expenseService;
         createChart();
         updateData();

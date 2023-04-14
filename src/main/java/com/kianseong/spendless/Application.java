@@ -6,17 +6,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * The entry point of the Spring Boot application.
- *
- * Use the @PWA annotation make the application installable on phones, tablets
- * and some desktop browsers.
- *
+ * The entry point of SpendLess.
  */
 @SpringBootApplication
 @Theme(value = "spendless")
 public class Application implements AppShellConfigurator {
 
-    public static void main(String[] args) {
+    /**
+     * Main method to jumpstart the program.
+     * @param args command line arguments
+     */
+    public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
     }
 

@@ -1,7 +1,7 @@
 package com.kianseong.spendless.ui.views.expenses;
 
 import com.kianseong.spendless.backend.expense.ExpenseService;
-import com.kianseong.spendless.ui.Expense;
+import com.kianseong.spendless.backend.expense.Expense;
 import com.kianseong.spendless.ui.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -21,7 +21,7 @@ public class ExpensesView extends VerticalLayout {
     private final Grid<Expense> grid = new Grid<>(Expense.class);
     private final TextField filterText = new TextField();
 
-    public ExpensesView(ExpenseService expenseService) {
+    public ExpensesView(final ExpenseService expenseService) {
         this.expenseService = expenseService;
 
         setSizeFull();
@@ -68,7 +68,7 @@ public class ExpensesView extends VerticalLayout {
         form.open();
     }
 
-    private void showExpenseForm(Expense expense) {
+    private void showExpenseForm(final Expense expense) {
         ExpenseForm form = new ExpenseForm(expenseService, expense);
         add(form);
         form.open();

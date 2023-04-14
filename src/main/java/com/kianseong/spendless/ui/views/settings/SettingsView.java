@@ -14,8 +14,10 @@ import com.vaadin.flow.router.Route;
 import static com.kianseong.spendless.ui.Theme.darkMode;
 
 @PageTitle("Settings")
-@Route(value = "/settings", layout = MainLayout.class)
+@Route(value = "settings", layout = MainLayout.class)
 public class SettingsView extends VerticalLayout {
+
+    protected Button button = new Button(darkMode ? "Light" : "Dark");
 
     public SettingsView() {
         setSizeFull();
@@ -24,7 +26,6 @@ public class SettingsView extends VerticalLayout {
 
     private HorizontalLayout createLightDarkModeToggle() {
         Text des = new Text("Toggle light or dark mode. Click the button to switch to the mode stated on the button.");
-        Button button = new Button(darkMode ? "Light" : "Dark");
         button.addClickListener(e -> {
             Theme.setTheme(getElement(), !darkMode);
             button.setText(darkMode ? "Light" : "Dark");

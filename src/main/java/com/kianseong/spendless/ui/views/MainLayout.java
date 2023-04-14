@@ -4,7 +4,6 @@ package com.kianseong.spendless.ui.views;
 import com.kianseong.spendless.ui.CookieManager;
 import com.kianseong.spendless.ui.appnav.AppNav;
 import com.kianseong.spendless.ui.appnav.AppNavItem;
-import com.kianseong.spendless.ui.views.about.AboutView;
 import com.kianseong.spendless.ui.views.expenses.ExpensesView;
 import com.kianseong.spendless.ui.views.settings.SettingsView;
 import com.kianseong.spendless.ui.views.statistics.StatisticsView;
@@ -14,15 +13,12 @@ import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.servlet.http.Cookie;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -62,7 +58,6 @@ public class MainLayout extends AppLayout {
     private AppNav createNavigation() {
         AppNav nav = new AppNav();
 
-        nav.addItem(new AppNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
         nav.addItem(new AppNavItem("Expenses", ExpensesView.class, LineAwesomeIcon.DOLLAR_SIGN_SOLID.create()));
         nav.addItem(new AppNavItem("Settings", SettingsView.class, LineAwesomeIcon.COG_SOLID.create()));
         nav.addItem(new AppNavItem("Statistics", StatisticsView.class, LineAwesomeIcon.CHART_PIE_SOLID.create()));

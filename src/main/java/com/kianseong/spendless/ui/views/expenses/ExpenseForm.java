@@ -1,7 +1,7 @@
 package com.kianseong.spendless.ui.views.expenses;
 
 import com.kianseong.spendless.backend.expense.ExpenseService;
-import com.kianseong.spendless.ui.Expense;
+import com.kianseong.spendless.backend.expense.Expense;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -15,25 +15,57 @@ import java.time.LocalDate;
 
 public class ExpenseForm extends VerticalLayout {
 
-    private int expenseId;
-
-    private final Dialog form = new Dialog();
-    private final Button deleteButton = new Button("Delete");
+    /**
+     * Expense ID of existing expense. Set to -1 when adding a new expense.
+     */
+    private final int expenseId;
+    /**
+     * Popup container.
+     */
+    private Dialog form;
+    /**
+     * Inject ExpenseService.
+     */
     private final ExpenseService expenseService;
 
+    /**
+     * Description.
+     */
     private final TextField descriptionField = new TextField("Description");
+    /**
+     * Category.
+     */
     private final TextField categoryField = new TextField("Category");
+    /**
+     * Indicates whether transaction is an income.
+     */
     private final Checkbox isIncomeCheckbox = new Checkbox("Income");
+    /**
+     * Amount.
+     */
     private final TextField amountField = new TextField("Amount");
+    /**
+     * Date.
+     */
     private final DatePicker dateField = new DatePicker("Date");
 
-    public ExpenseForm(ExpenseService expenseService) {
+    /**
+     * Constructor for new expense.
+     * @param expenseService to be injected
+     */
+    public ExpenseForm(final ExpenseService expenseService) {
         this.expenseService = expenseService;
         expenseId = -1;
         setupNewForm();
     }
 
-    public ExpenseForm(ExpenseService expenseService, Expense expense) {
+    /**
+     * Constructor for existing expense.
+     * @param expenseService to be injected
+     * @param expense expense to load into form
+     */
+    public ExpenseForm(final ExpenseService expenseService,
+                       final Expense expense) {
         this.expenseService = expenseService;
         expenseId = expense.getId();
         setupExistingForm(expense);
@@ -41,33 +73,44 @@ public class ExpenseForm extends VerticalLayout {
 
     private void setupNewForm() {
         dateField.setValue(LocalDate.now());
-        form.setHeaderTitle("New expense");
-        form.getHeader().add(isIncomeCheckbox);
-        form.setCloseOnOutsideClick(false);
-        form.setCloseOnEsc(true); // Ctrl+Esc
+        form = createForm("New Expense");
         form.getFooter().add(createCancelButton(), createSaveButton());
         form.add(createDialogLayout());
     }
 
-    private void setupExistingForm(Expense expense) {
+    private void setupExistingForm(final Expense expense) {
         descriptionField.setValue(expense.getDescription());
         categoryField.setValue(expense.getCategory());
         isIncomeCheckbox.setValue(expense.getIsIncome());
         amountField.setValue(Float.toString(expense.getAmount()));
         dateField.setValue(expense.getDate());
 
-        form.setHeaderTitle("Expense");
+        Button deleteButton = new Button("Delete");
+        deleteButton.addClickListener(e -> deleteExpense(expense));
+
+        form = createForm("Expense");
+        form.getFooter().add(
+                createCancelButton(),
+                deleteButton,
+                createSaveButton()
+        );
+        form.add(createDialogLayout());
+    }
+
+    /**
+     * Opens the form.
+     */
+    public void open() {
+        form.open();
+    }
+
+    private Dialog createForm(final String title) {
+        form = new Dialog();
+        form.setHeaderTitle(title);
         form.getHeader().add(isIncomeCheckbox);
         form.setCloseOnOutsideClick(false);
         form.setCloseOnEsc(true); // Ctrl+Esc
-        form.getFooter().add(createCancelButton(), deleteButton, createSaveButton());
-        form.add(createDialogLayout());
-
-        deleteButton.addClickListener(e -> deleteExpense(expense));
-    }
-
-    public void open() {
-        form.open();
+        return form;
     }
 
     private Button createCancelButton() {
@@ -96,9 +139,17 @@ public class ExpenseForm extends VerticalLayout {
         return save;
     }
 
-    // Creates the popup form not including the header and footer
+    /**
+     * Creates the popup form not including the header and footer.
+     * @return VerticalLayout popup form component
+     */
     private VerticalLayout createDialogLayout() {
-        VerticalLayout layout = new VerticalLayout(descriptionField, categoryField, amountField, dateField);
+        VerticalLayout layout = new VerticalLayout(
+                descriptionField,
+                categoryField,
+                amountField,
+                dateField
+        );
         layout.setPadding(false);
         layout.setSpacing(false);
         layout.setAlignItems(Alignment.STRETCH);
@@ -117,16 +168,20 @@ public class ExpenseForm extends VerticalLayout {
         );
     }
 
-    private void saveExpense(Expense expense) {
+    private void saveExpense(final Expense expense) {
         expenseService.saveExpense(expense);
         form.close();
         String message = expenseId != -1 ? "Expense edited!" : "Expense added!";
-        Notification.show(message).setPosition(Notification.Position.TOP_CENTER);
+        Notification
+                .show(message)
+                .setPosition(Notification.Position.TOP_CENTER);
     }
 
-    private void deleteExpense(Expense expense) {
+    private void deleteExpense(final Expense expense) {
         form.close();
         expenseService.deleteExpense(expense);
-        Notification.show("Expense deleted!").setPosition(Notification.Position.TOP_CENTER);
+        Notification
+                .show("Expense deleted!")
+                .setPosition(Notification.Position.TOP_CENTER);
     }
 }
